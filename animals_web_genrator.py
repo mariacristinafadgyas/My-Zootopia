@@ -32,6 +32,7 @@ def serialize_animals(animals_data):
     """Receives the list animals_data as parameter and returns a string containing
        the desired data for the whole list of animals"""
     output = ''
+    output += f'<div class="skin__type"><strong>Skin type: </strong>{animals_data[0]["characteristics"].get("skin_type")}</div>'
     for animal in animals_data:
         output += serialize_animal(animal)
     return output
@@ -46,13 +47,46 @@ def generate_html_file(html_path, output):
         replaced_output = template.replace("__REPLACE_ANIMALS_INFO__", output)
     with open("animals.html", "w") as file_output:
         file_output.write(replaced_output)
+    print("\u001b[36mThe HTML file was generated.\u001b[0m")
+
+def user_selection():
+    """Asks the user to select the type of skin for the animal"""
+    while True:
+        user_input = input("""\u001b[35mSkin types:
+Hair
+Fur
+Scales
+Please select a skin type: \u001b[0m
+""")
+        if user_input.lower() == "hair" or user_input.lower() == "fur" or user_input.lower() == "scales":
+            return user_input
+        elif user_input.lower() == "quit":
+            quit()
+        else:
+            print("\u001b[31mPlease select one of the options: hair, fur, scales or quit(to quit).\u001b[0m")
+
+
+def generate_html_user_selection(animals_data, user_input):
+    """Receives the user input and the animal data as parameters and returns a list of
+    dictionaries containing the animals based on the user selection"""
+    animals_data_user_choice = []
+    for animal in animals_data:
+        if user_input.lower() == "hair" and animal['characteristics']['skin_type'] == "Hair":
+            animals_data_user_choice.append(animal)
+        elif user_input.lower() == "fur" and animal['characteristics'].get('skin_type') == "Fur":
+            animals_data_user_choice.append(animal)
+        elif user_input.lower() == "scales" and animal['characteristics'].get('skin_type') == "Scales":
+             animals_data_user_choice.append(animal)
+    return animals_data_user_choice
 
 
 def main():
     """Calls the functions in the program"""
     animals_data = load_data('animals_data.json')
-    output = serialize_animals(animals_data)
-    generate_html_file('animals_template.html',output)
+    user_input = user_selection()
+    animals_data_user_choice = generate_html_user_selection(animals_data, user_input)
+    output = serialize_animals(animals_data_user_choice)
+    generate_html_file('animals_template.html', output)
 
 
 if __name__ == "__main__":
