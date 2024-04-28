@@ -9,14 +9,17 @@ def load_data(file_path):
 
 
 def generate_string(animals_data):
-    """Receives animals data as parameter and returns a string containing the desired information"""
+    """Receives animals data as parameter and returns a string containing
+    the desired information"""
     output = ''
     for animal in animals_data:
         output += '<li class="cards__item">'
-        output += f'Name: {animal.get("name")}<br/>\n'
-        output += f'Diet: {animal["characteristics"].get("diet")}<br/>\n'
-        output += f'Location: {animal["locations"][0]}<br/>\n'
-        output += f'Type: {animal["characteristics"].get("type")}<br/>\n'
+        output += f'<div class="card__title">{animal.get("name")}</div>'
+        output += '<p class="card__text">'
+        output += f'<strong>Location: </strong>{animal["locations"][0]}<br/>\n'
+        output += f'<strong>Type: </strong>{animal["characteristics"].get("type")}<br/>\n'
+        output += f'<strong>Diet: </strong>{animal["characteristics"].get("diet")}<br/>\n'
+        output += '</p>\n'
         output += '</li>'
     return output
 
@@ -30,8 +33,6 @@ def generate_html_file(html_path, output):
         replaced_output = template.replace("__REPLACE_ANIMALS_INFO__", output)
     with open("animals.html", "w") as file_output:
         file_output.write(replaced_output)
-
-
 
 
 def main():
