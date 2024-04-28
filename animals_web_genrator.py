@@ -12,10 +12,12 @@ def generate_string(animals_data):
     """Receives animals data as parameter and returns a string containing the desired information"""
     output = ''
     for animal in animals_data:
-        output += f'Name: {animal.get("name")}\n'
-        output += f'Diet: {animal["characteristics"].get("diet")}\n'
-        output += f'Location: {animal["locations"][0]}\n'
-        output += f'Type: {animal["characteristics"].get("type")}\n'
+        output += '<li class="cards__item">'
+        output += f'Name: {animal.get("name")}<br/>\n'
+        output += f'Diet: {animal["characteristics"].get("diet")}<br/>\n'
+        output += f'Location: {animal["locations"][0]}<br/>\n'
+        output += f'Type: {animal["characteristics"].get("type")}<br/>\n'
+        output += '</li>'
     return output
 
 
