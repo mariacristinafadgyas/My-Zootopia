@@ -49,6 +49,7 @@ def generate_html_file(html_path, output):
         file_output.write(replaced_output)
     print("\u001b[36mThe HTML file was generated.\u001b[0m")
 
+
 def user_selection():
     """Asks the user to select the type of skin for the animal"""
     while True:
