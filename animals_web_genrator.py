@@ -1,11 +1,17 @@
 import json
+import requests
 
 
-def load_data(file_path):
-    """ Loads a JSON file """
-    with open(file_path, "r") as handle:
-        animals_data = json.load(handle)
-    return animals_data
+def get_data(animal_name):
+    """Fetches animals data from free API"""
+    api_url = 'https://api.api-ninjas.com/v1/animals?name={}'.format(animal_name)
+    response = requests.get(api_url, headers={'X-Api-Key': '8CFm02DRZSY8gOcb8OIFog==tLAauWRZOqShOiBQ'})
+    if response.status_code == requests.codes.ok:
+        animals_data = response.json()
+        return animals_data
+    else:
+        print("Error:", response.status_code, response.json())
+
 
 
 def serialize_animal(animal_obj):
@@ -83,7 +89,7 @@ def generate_html_user_selection(animals_data, user_input):
 
 def main():
     """Calls the functions in the program"""
-    animals_data = load_data('animals_data.json')
+    animals_data = get_data('fox')
     user_input = user_selection()
     animals_data_user_choice = generate_html_user_selection(animals_data, user_input)
     output = serialize_animals(animals_data_user_choice)
