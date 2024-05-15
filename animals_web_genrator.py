@@ -1,21 +1,4 @@
-import requests
-
-
-def user_animal_selection():
-    """Asks user for animal selection"""
-    user_input = input("\u001b[31mEnter a name of an animal: \u001b[0m")
-    return user_input
-
-
-def get_data(animal_name):
-    """Fetches animals data from the free ninja API"""
-    api_url = 'https://api.api-ninjas.com/v1/animals?name={}'.format(animal_name)
-    response = requests.get(api_url, headers={'X-Api-Key': '8CFm02DRZSY8gOcb8OIFog==tLAauWRZOqShOiBQ'})
-    if response.status_code == requests.codes.ok:
-        animals_data = response.json()
-        return animals_data
-    else:
-        print("Error:", response.status_code, response.json())
+from data_fetcher import *
 
 
 def serialize_animal(animal_obj):
@@ -39,8 +22,8 @@ def serialize_animal(animal_obj):
 
 
 def serialize_animals(animals_data, animal_name):
-    """Receives the list animals_data as parameter and returns a string containing
-       the desired data for the whole list of animals"""
+    """Receives the list animals_data and animal_name as parameters and returns
+    a string containing the desired data for the whole list of animals"""
     output = ''
     if animals_data == []:
         output += f'<h2>The animal <em>{animal_name}</em> does not exist in the database.</h2>\n'
