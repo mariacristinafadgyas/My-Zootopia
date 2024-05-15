@@ -38,12 +38,15 @@ def serialize_animal(animal_obj):
     return output
 
 
-def serialize_animals(animals_data):
+def serialize_animals(animals_data, animal_name):
     """Receives the list animals_data as parameter and returns a string containing
        the desired data for the whole list of animals"""
     output = ''
-    for animal in animals_data:
-        output += serialize_animal(animal)
+    if animals_data == []:
+        output += f'<h2>The animal <em>{animal_name}</em> does not exist in the database.</h2>\n'
+    else:
+        for animal in animals_data:
+            output += serialize_animal(animal)
     return output
 
 
@@ -63,7 +66,7 @@ def main():
     """Calls the functions in the program"""
     animal_name = user_animal_selection()
     animals_data = get_data(animal_name)
-    output = serialize_animals(animals_data)
+    output = serialize_animals(animals_data, animal_name)
     generate_html_file('animals_template.html', output)
 
 
