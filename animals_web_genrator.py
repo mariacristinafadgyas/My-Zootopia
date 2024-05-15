@@ -1,9 +1,14 @@
-import json
 import requests
 
 
+def user_animal_selection():
+    """Asks user for animal selection"""
+    user_input = input("\u001b[31mEnter a name of an animal: \u001b[0m")
+    return user_input
+
+
 def get_data(animal_name):
-    """Fetches animals data from free API"""
+    """Fetches animals data from the free ninja API"""
     api_url = 'https://api.api-ninjas.com/v1/animals?name={}'.format(animal_name)
     response = requests.get(api_url, headers={'X-Api-Key': '8CFm02DRZSY8gOcb8OIFog==tLAauWRZOqShOiBQ'})
     if response.status_code == requests.codes.ok:
@@ -11,7 +16,6 @@ def get_data(animal_name):
         return animals_data
     else:
         print("Error:", response.status_code, response.json())
-
 
 
 def serialize_animal(animal_obj):
@@ -38,7 +42,6 @@ def serialize_animals(animals_data):
     """Receives the list animals_data as parameter and returns a string containing
        the desired data for the whole list of animals"""
     output = ''
-    output += f'<div class="skin__type"><strong>Skin type: </strong>{animals_data[0]["characteristics"].get("skin_type")}</div>'
     for animal in animals_data:
         output += serialize_animal(animal)
     return output
@@ -46,53 +49,21 @@ def serialize_animals(animals_data):
 
 def generate_html_file(html_path, output):
     """Receives the output string of the previous function and the path of the HTML
-    template as parameters and writes the updated HTML file"""
+    template as parameters and generates the HTML file"""
     with open(html_path, "r") as fileobj:
         template = fileobj.read()
     if "__REPLACE_ANIMALS_INFO__" in template:
         replaced_output = template.replace("__REPLACE_ANIMALS_INFO__", output)
     with open("animals.html", "w") as file_output:
         file_output.write(replaced_output)
-    print("\u001b[36mThe HTML file was generated.\u001b[0m")
-
-
-def user_selection():
-    """Asks the user to select the type of skin for the animal"""
-    while True:
-        user_input = input("""\u001b[35mSkin types:
-Hair
-Fur
-Scales
-Please select a skin type: \u001b[0m
-""")
-        if user_input.lower() == "hair" or user_input.lower() == "fur" or user_input.lower() == "scales":
-            return user_input
-        elif user_input.lower() == "quit":
-            quit()
-        else:
-            print("\u001b[31mPlease select one of the options: hair, fur, scales or quit(to quit).\u001b[0m")
-
-
-def generate_html_user_selection(animals_data, user_input):
-    """Receives the user input and the animal data as parameters and returns a list of
-    dictionaries containing the animals based on the user selection"""
-    animals_data_user_choice = []
-    for animal in animals_data:
-        if user_input.lower() == "hair" and animal['characteristics']['skin_type'] == "Hair":
-            animals_data_user_choice.append(animal)
-        elif user_input.lower() == "fur" and animal['characteristics'].get('skin_type') == "Fur":
-            animals_data_user_choice.append(animal)
-        elif user_input.lower() == "scales" and animal['characteristics'].get('skin_type') == "Scales":
-             animals_data_user_choice.append(animal)
-    return animals_data_user_choice
+    print("\u001b[36mWebsite was successfully generated to the animals.html file.\u001b[0m")
 
 
 def main():
     """Calls the functions in the program"""
-    animals_data = get_data('fox')
-    user_input = user_selection()
-    animals_data_user_choice = generate_html_user_selection(animals_data, user_input)
-    output = serialize_animals(animals_data_user_choice)
+    animal_name = user_animal_selection()
+    animals_data = get_data(animal_name)
+    output = serialize_animals(animals_data)
     generate_html_file('animals_template.html', output)
 
 
