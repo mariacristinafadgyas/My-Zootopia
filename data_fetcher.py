@@ -1,4 +1,9 @@
 import requests
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+API_KEY = os.getenv('API_KEY')
 
 
 def user_animal_selection():
@@ -10,7 +15,7 @@ def user_animal_selection():
 def get_data(animal_name):
     """Fetches animals data from the free ninja API"""
     api_url = 'https://api.api-ninjas.com/v1/animals?name={}'.format(animal_name)
-    response = requests.get(api_url, headers={'X-Api-Key': '8CFm02DRZSY8gOcb8OIFog==tLAauWRZOqShOiBQ'})
+    response = requests.get(api_url, headers={'X-Api-Key': API_KEY})
     if response.status_code == requests.codes.ok:
         animals_data = response.json()
         return animals_data
